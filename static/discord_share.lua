@@ -1,10 +1,10 @@
 local enable = gui.new_checkbox('Enable', 'discord_rpc', false); enable:set_tooltip('Enables discord rpc')
-local keycode = gui.new_textbox("Keycode", "discord_rpc_keycode")
-keycode:set_value("75")
-local api = "https://domain-server/api/share"
-local apiKey = "apikey"
+local keycode = gui.new_keybox("Post key", "discord_rpc_keycode")
+local api = gui.new_textbox("API", "discord_rpc_api_endpoint")
+local apiKey = gui.new_textbox("API Key", "discord_rpc_apiKey")
 
-renderer.new_font('discord_rpc_font', 'Verdana', 25, 800, flag.new(fontflags.antialias))
+api:set_value("https://your-server/api/share")
+apiKey:set_value("apikey")
 
 function on_get(data)
     if data == "OK" then chat.write("Posted") else chat.write("Could't share") end
@@ -16,12 +16,12 @@ function on_key_pressed(key_code, is_char)
         print("serverIp: " .. info.game.server_ip)
         print("serverName: " .. info.game.server_name)
         print("serverMap: " .. info.game.map)
-        http.post(api, {
+        http.post(api:get_value(), {
             username = info.ev0lve.username,
             serverIp = info.game.server_ip,
             serverName = info.game.server_name,
             serverMap = info.game.map,
-            apiKey = apiKey
+            apiKey = apiKey:get_value()
         }, on_get)
     end
 end
